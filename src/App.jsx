@@ -9,9 +9,9 @@ import Orders from "./pages/Orders";
 import Products from "./pages/Products";
 import Checkout from "./pages/Chackout";
 import ErrorPage from "./pages/ErrorPage";
+import ProductDetails from "./pages/ProductDetails"; // Import ProductDetails
 import MainLayout from "./layouts/MainLayout";
 import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
 
 export const TokenContext = createContext();
 export const UserContext = createContext();
@@ -35,7 +35,6 @@ function App() {
             element={
               <MainLayout>
                 <Navbar />
-                <Hero />
                 <Home />
               </MainLayout>
             }
@@ -66,6 +65,15 @@ function App() {
               <MainLayout>
                 <Navbar />
                 <Products />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/products/:id" // Route for ProductDetails
+            element={
+              <MainLayout>
+                <Navbar />
+                <ProductDetails />
               </MainLayout>
             }
           />
