@@ -6,7 +6,7 @@ const About = () => {
       <div className="container mx-auto text-center px-4">
         <h2 className="text-6xl font-bold text-gray-600 mb-4">
           We love
-          <span className="bg-blue-500 text-white rounded-md px-4 text-4xl font-bold">
+          <span className="bg-blue-500 text-white rounded-md px-4 text-4xl ml-4 font-bold">
             comfy
           </span>
         </h2>

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react"; // useState va useEffect ni import qiling
-import { Link } from "react-router-dom"; // Link ni import qiling
+import React, { useState, useEffect } from "react"; 
+import { Link } from "react-router-dom";
+import { PuffLoader } from "react-spinners";
 
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -31,7 +32,11 @@ const Home = () => {
     fetchFeaturedProducts();
   }, []);
 
-  if (loading) return <div className="text-center py-20">Yuklanmoqda...</div>;
+  if (loading) return (
+    <div className="flex items-center justify-center h-screen -mt-20">
+      <PuffLoader />
+    </div>
+  )
   if (error)
     return <div className="text-center py-20 text-red-500">{error}</div>;
 
@@ -78,7 +83,7 @@ const Home = () => {
           {featuredProducts.slice(0, 3).map((product) => (
             <Link
               key={product.id}
-              to={`/products/${product.id}`} // Link to ProductDetails
+              to={`/products/${product.id}`}
               className="card w-full shadow-xl hover:shadow-2xl transition duration-300"
             >
               <div className="px-4 pt-4">
