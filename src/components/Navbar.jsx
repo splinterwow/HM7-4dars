@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { BsCart3, BsSun, BsMoonStars } from "react-icons/bs";
 
-const Navbar = () => {
+const Navbar = ({ cartCount }) => { // cartCount prop'ini qabul qilish
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "winter");
 
   const handleTheme = () => {
@@ -80,7 +80,7 @@ const Navbar = () => {
             <div className="indicator">
               <BsCart3 className="h-6 w-6" />
               <span className="badge badge-sm badge-primary indicator-item">
-                0
+                {cartCount} {/* Savatcha sonini ko'rsatish */}
               </span>
             </div>
           </NavLink>

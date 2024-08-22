@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { PuffLoader } from 'react-spinners';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [quantity, setQuantity] = useState(1); // Miqdor uchun holat
+  const [selectedColor, setSelectedColor] = useState(''); // Rang uchun holat
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -26,7 +30,25 @@ const ProductDetails = () => {
     fetchProductDetails();
   }, [id]);
 
-  if (loading) return <div>Loading...</div>;
+  const handleAddToBag = () => {
+    const productWithDetails = { 
+      ...product, 
+      quantity, 
+      selectedColor 
+    }; // Mahsulot, miqdor va tanlangan rang bilan obyekt yaratish
+    const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+    existingCart.push(productWithDetails);
+    localStorage.setItem('cart', JSON.stringify(existingCart));
+    navigate('/cart'); // Cart sahifasiga o'tish
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen -mt-20">
+        <PuffLoader />
+      </div>
+    );
+  }
   if (error) return <div>Error: {error}</div>;
 
   const price = parseFloat(product.attributes.price);
@@ -46,26 +68,29 @@ const ProductDetails = () => {
           <p className="mt-6 leading-8">{product.attributes.description}</p>
           <div className="mt-6">
             <label className="text-md font-medium tracking-wider capitalize">Colors</label>
-            <span className="inline-block w-4 h-4 rounded-full bg-red-500 mr-2"></span>
-            <span className="inline-block w-4 h-4 rounded-full bg-blue-500 mr-2"></span>
-            <span className="inline-block w-4 h-4 rounded-full bg-green-500"></span>
+            <div className="flex mt-2">
+              {['red', 'blue', 'green'].map((color) => ( // Misol ranglar
+                <span 
+                  key={color} 
+                  className={`inline-block w-4 h-4 rounded-full mr-2 cursor-pointer ${color}-500`} 
+                  onClick={() => setSelectedColor(color)} 
+                ></span>
+              ))}
+            </div>
           </div>
           <div className="mt-3">
             <label className="block text-lg">Amount</label>
-            <select className="select select-secondary select-bordered select-md w-full max-w-xs mt-4">
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-              <option value={3}>3</option>
-              <option value={4}>4</option>
-              <option value={5}>5</option>
-              <option value={6}>6</option>
-              <option value={7}>7</option>
-              <option value={8}>8</option>
-              <option value={9}>9</option>
-              <option value={10}>10</option>
+            <select
+              className="select select-secondary select-bordered select-md w-full max-w-xs mt-4"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)} // Miqdorni yangilash
+            >
+              {[...Array(10).keys()].map((num) => (
+                <option key={num + 1} value={num + 1}>{num + 1}</option>
+              ))}
             </select>
           </div>
-          <button className="mt-6 bg-blue-500 text-white rounded-md px-4 py-2">
+          <button className="mt-6 bg-blue-500 text-white rounded-md px-4 py-2" onClick={handleAddToBag}>
             ADD TO BAG
           </button>
         </div>

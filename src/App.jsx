@@ -9,7 +9,7 @@ import Orders from "./pages/Orders";
 import Products from "./pages/Products";
 import Checkout from "./pages/Chackout";
 import ErrorPage from "./pages/ErrorPage";
-import ProductDetails from "./pages/ProductDetails"; // Import ProductDetails
+import ProductDetails from "./pages/ProductDetails";
 import MainLayout from "./layouts/MainLayout";
 import Navbar from "./components/Navbar";
 
@@ -19,11 +19,14 @@ export const UserContext = createContext();
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState({});
+  const [cartCount, setCartCount] = useState(0); // Savatcha soni uchun holat
 
   useEffect(() => {
     if (localStorage.getItem("user")) {
       setUser(JSON.parse(localStorage.getItem("user")));
     }
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    setCartCount(cartItems.length); // Savatchadagi mahsulotlar sonini yangilash
   }, []);
 
   return (
@@ -34,7 +37,7 @@ function App() {
             path="/"
             element={
               <MainLayout>
-                <Navbar />
+                <Navbar cartCount={cartCount} /> {/* Savatcha sonini Navbar ga uzatish */}
                 <Home />
               </MainLayout>
             }
@@ -43,7 +46,7 @@ function App() {
             path="/about"
             element={
               <MainLayout>
-                <Navbar />
+                <Navbar cartCount={cartCount} />
                 <About />
               </MainLayout>
             }
@@ -52,7 +55,7 @@ function App() {
             path="/cart"
             element={
               <MainLayout>
-                <Navbar />
+                <Navbar cartCount={cartCount} />
                 <Cart />
               </MainLayout>
             }
@@ -63,16 +66,16 @@ function App() {
             path="/products"
             element={
               <MainLayout>
-                <Navbar />
+                <Navbar cartCount={cartCount} />
                 <Products />
               </MainLayout>
             }
           />
           <Route
-            path="/products/:id" // Route for ProductDetails
+            path="/products/:id" 
             element={
               <MainLayout>
-                <Navbar />
+                <Navbar cartCount={cartCount} />
                 <ProductDetails />
               </MainLayout>
             }
@@ -83,7 +86,7 @@ function App() {
                 path="/orders"
                 element={
                   <MainLayout>
-                    <Navbar />
+                    <Navbar cartCount={cartCount} />
                     <Orders />
                   </MainLayout>
                 }
@@ -92,7 +95,7 @@ function App() {
                 path="/checkout"
                 element={
                   <MainLayout>
-                    <Navbar />
+                    <Navbar cartCount={cartCount} />
                     <Checkout />
                   </MainLayout>
                 }
